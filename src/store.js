@@ -1,3 +1,5 @@
+import { generateNewCode, getClickText } from "./utils";
+
 /**
  * Хранилище состояния приложения
  */
@@ -42,9 +44,10 @@ class Store {
    * Добавление новой записи
    */
   addItem() {
+    const newElementCode = generateNewCode(this.state.list)
     this.setState({
       ...this.state,
-      list: [...this.state.list, {code: this.state.list.length + 1, title: 'Новая запись'}]
+      list: [...this.state.list, { code: newElementCode, title: 'Новая запись' }]
     })
   };
 
@@ -69,6 +72,15 @@ class Store {
       list: this.state.list.map(item => {
         if (item.code === code) {
           item.selected = !item.selected;
+          if (item.clickCount) {
+            item.clickCount += 1;
+            item.clickText = getClickText(item.clickCount)
+          } else {
+            item.clickCount = 1;
+            item.clickText = `Выделяли 1 раз`
+          }
+        } else {
+          item.selected = false
         }
         return item;
       })
