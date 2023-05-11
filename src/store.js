@@ -72,10 +72,11 @@ class Store {
       list: this.state.list.map(item => {
         if (item.code === code) {
           item.selected = !item.selected;
-          if (item.clickCount) {
+          console.log(item.selected , item.clickCount );
+          if (item.clickCount && item.selected) {
             item.clickCount += 1;
             item.clickText = getClickText(item.clickCount)
-          } else {
+          } else if (!item.clickCount && item.selected) {
             item.clickCount = 1;
             item.clickText = `Выделяли 1 раз`
           }
