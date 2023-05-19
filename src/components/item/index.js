@@ -16,7 +16,7 @@ function Item({item, onClick,btnText,isCardActive}){
       </div>
       <div className="itemInfo">
         <div className="itemInfoContainer">
-          <div>{item.price} Р</div>
+          <div>{item.price} ₽</div>
           {
             isCardActive 
             ?
