@@ -10,7 +10,7 @@ function Card({list, onDelete, onClose, isCardActive,fullPrice}){
     <div className={ isCardActive ? "Card" : "CardClose"}>
       <div className="CardWrapper">
         <div>
-          <Head title='Магазин'/>
+          <Head title='Корзина'/>
           <button className="cardBtn" onClick={onClose}>Закрыть</button>
         </div>
         <MainContainer>
