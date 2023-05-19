@@ -3,6 +3,9 @@ import List from "./components/list";
 import Controls from "./components/controls";
 import Head from "./components/head";
 import PageLayout from "./components/page-layout";
+import BasketInfo from "./components/basket-info";
+import Card from "./components/card";
+import MainContainer from './components/main-container';
 
 /**
  * Приложение
@@ -12,29 +15,41 @@ import PageLayout from "./components/page-layout";
 function App({store}) {
 
   const list = store.getState().list;
+  const fullPrice = store.getState().priceForAllGoods;
+  const quantity = store.getState().quantityOfGoods;
+  const isCardOpen = store.getState().isBacketCardOpen;
+  const listInCard = list.filter(good => good.isInBasket);
 
   const callbacks = {
-    onDeleteItem: useCallback((code) => {
-      store.deleteItem(code);
-    }, [store]),
+    onAddGoodToBasket: useCallback((good) =>{
+      store.addGoodToBasket(good);
+    },[store]),
 
-    onSelectItem: useCallback((code) => {
-      store.selectItem(code);
-    }, [store]),
+    onDeleteGoodFromBasket: useCallback((good) =>{
+      store.deleteGoodFromBasket(good);
+    },[store]),
 
-    onAddItem: useCallback(() => {
-      store.addItem();
-    }, [store])
+    onOpenCard: useCallback(() =>{
+      store.openCard();
+    },[store]),
+
+    onCloseCard: useCallback(() =>{
+      store.closeCard();
+    },[store]),
   }
 
+
   return (
-    <PageLayout>
-      <Head title='Приложение на чистом JS'/>
-      <Controls onAdd={callbacks.onAddItem}/>
-      <List list={list}
-            onDeleteItem={callbacks.onDeleteItem}
-            onSelectItem={callbacks.onSelectItem}/>
-    </PageLayout>
+    <>
+      <PageLayout>
+        <Head title='Магазин'/>
+        <MainContainer>
+          <BasketInfo fullPrice={fullPrice} quantity={quantity} onOpenCard={callbacks.onOpenCard} />
+          <List list={list} isCardActive={isCardOpen} onClick={callbacks.onAddGoodToBasket} btnText={'Добавить'}/>
+        </MainContainer>
+        <Card list={listInCard} isCardActive={isCardOpen} fullPrice={fullPrice} onClose={callbacks.onCloseCard} onDelete={callbacks.onDeleteGoodFromBasket} />
+      </PageLayout>
+    </>
   );
 }
 

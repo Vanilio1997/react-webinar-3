@@ -62,6 +62,59 @@ class Store {
     })
   };
 
+  // Добавляем товар в корзину 
+
+  addGoodToBasket(good){
+    this.setState({
+      ...this.state,
+      list: this.state.list.map((item) =>{
+        if(good.code === item.code){
+          if(item.quantity){
+            return {...item , quantity: item.quantity + 1};
+          } else{
+            return {...item , quantity: 1, isInBasket: true};
+          }
+        } else{
+          return item;
+        }
+      }),
+      quantityOfGoods: good.isInBasket ? this.state.quantityOfGoods: this.state.quantityOfGoods + 1,
+      priceForAllGoods: this.state.priceForAllGoods + good.price
+    })
+  }
+
+  // Удаляем товар из корзины
+  deleteGoodFromBasket(good){
+    this.setState({
+      ...this.state,
+      list: this.state.list.map((item) =>{
+        if(good.code === item.code){
+          return  {...item, isInBasket: false , quantity:0};
+        } else {
+          return item;
+        }
+      }),
+      quantityOfGoods: this.state.quantityOfGoods - 1,
+      priceForAllGoods: this.state.priceForAllGoods - good.price * good.quantity
+    })
+  }
+
+
+  // Открываем модальное окно (Мог объединить эту функцию с закрыть модальное окно, но не стал)  
+  openCard(){
+    this.setState({
+      ...this.state,
+      isBacketCardOpen: true
+    })
+  }
+
+  // Закрываем модальное окно
+  closeCard(){
+    this.setState({
+      ...this.state,
+      isBacketCardOpen: false
+    })
+  }
   /**
    * Выделение записи по коду
    * @param code
