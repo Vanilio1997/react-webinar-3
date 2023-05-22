@@ -1,12 +1,16 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
-import {plural} from "../../utils";
+import {plural, splitedNumber} from "../../utils";
 import "./style.css";
+import { getSplitedNumber } from "../../utils";
 
-function Item({item, onClick,btnText,isCardActive}){
-  function addElement(element){
-    onClick(element);
+function Item({item, onClick,btnText,isItModal}){
+  function addElement(code){
+    onClick(code);
   }
+
+ const splitedPrice = getSplitedNumber(item.price);
+ const splitedQuantity = item.quantity && getSplitedNumber(item.quantity);
 
   return (
     <div className={'Item'}>
@@ -16,17 +20,17 @@ function Item({item, onClick,btnText,isCardActive}){
       </div>
       <div className="itemInfo">
         <div className="itemInfoContainer">
-          <div>{item.price} ₽</div>
+          <div className="itemInfoElement">{splitedPrice} ₽</div>
           {
-            isCardActive 
+            isItModal 
             ?
-            <div> {item.quantity} шт</div>
+            <div className="itemInfoElement"> {splitedQuantity} шт</div>
             :
             null
           }
         </div>
         <div className='Item-actions'>
-          <button onClick={() => addElement(item)}>
+          <button onClick={() => addElement(item.code)}>
             {btnText}
           </button>
         </div>
@@ -43,7 +47,7 @@ Item.propTypes = {
   }).isRequired,
   onClick: PropTypes.func.isRequired,
   btnText: PropTypes.string .isRequired,
-  isCardActive: PropTypes.bool
+  isItModal: PropTypes.bool
 };
 
 // Item.defaultProps = {

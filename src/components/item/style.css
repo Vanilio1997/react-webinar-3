@@ -2,15 +2,12 @@
   display: flex;
   justify-content: space-between;
   transition: background-color 1s;
+  padding: 2px 20px;
 }
 
 .Item_selected {
   background: #75aaf1;
   color: #fff;
-}
-
-.Item-code {
-  padding: 20px 10px 20px 20px;
 }
 
 .Item-title {
@@ -21,7 +18,7 @@
 .Item-actions {
   display: flex;
   justify-content: flex-end;
-  padding: 24px 0;
+  padding: 18px 0;
 }
 
 .itemInfo{
@@ -33,4 +30,8 @@
 .itemInfoContainer{
   display: flex;
   gap: 60px;
+}
+
+.itemInfoElement{
+  font-size: 20px;
 }

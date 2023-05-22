@@ -5,3 +5,9 @@
 .List-item {
   border-bottom: 1px dashed #ccc;
 }
+
+.diveder{
+  width: 100%;
+  height: 0;
+  border-top: 1px dashed #ccc;
+}

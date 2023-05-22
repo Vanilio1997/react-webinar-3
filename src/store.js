@@ -64,38 +64,46 @@ class Store {
 
   // Добавляем товар в корзину 
 
-  addGoodToBasket(good){
+  addGoodToBasket(code){
+  const ourGood = this.state.list.find(good => good.code === code);
+  const newList = this.state.list.map((item) => {
+      if(code === item.code){
+        if(item.quantity){
+          return {...item , quantity: item.quantity + 1};
+        } else{
+          return {...item , quantity: 1, isInBasket: true};
+        }
+      } else{
+        return item;
+      }
+    });
+  const newBasketList = newList.filter(good => good.isInBasket);
     this.setState({
       ...this.state,
-      list: this.state.list.map((item) =>{
-        if(good.code === item.code){
-          if(item.quantity){
-            return {...item , quantity: item.quantity + 1};
-          } else{
-            return {...item , quantity: 1, isInBasket: true};
-          }
-        } else{
-          return item;
-        }
-      }),
-      quantityOfGoods: good.isInBasket ? this.state.quantityOfGoods: this.state.quantityOfGoods + 1,
-      priceForAllGoods: this.state.priceForAllGoods + good.price
+      list: newList,
+      basketList:newBasketList,
+      quantityOfGoods: ourGood.isInBasket ? this.state.quantityOfGoods: this.state.quantityOfGoods + 1,
+      priceForAllGoods: this.state.priceForAllGoods + ourGood.price
     })
   }
 
   // Удаляем товар из корзины
-  deleteGoodFromBasket(good){
+  deleteGoodFromBasket(code){
+    const ourGood = this.state.list.find(good => good.code === code);
+    const newList =  this.state.list.map((item) =>{
+      if(code === item.code){
+        return  {...item, isInBasket: false , quantity:0};
+      } else {
+        return item;
+      }
+    })
+    const newBasketList = newList.filter(good => good.isInBasket);
     this.setState({
       ...this.state,
-      list: this.state.list.map((item) =>{
-        if(good.code === item.code){
-          return  {...item, isInBasket: false , quantity:0};
-        } else {
-          return item;
-        }
-      }),
+      list: newList,
+      basketList: newBasketList,
       quantityOfGoods: this.state.quantityOfGoods - 1,
-      priceForAllGoods: this.state.priceForAllGoods - good.price * good.quantity
+      priceForAllGoods: this.state.priceForAllGoods - ourGood.price * ourGood.quantity
     })
   }
 

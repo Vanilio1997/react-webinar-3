@@ -3,37 +3,37 @@ import PropTypes from "prop-types";
 import "./style.css";
 import Head from "../head";
 import List from "../list";
-import MainContainer from "../main-container";
+import { getSplitedNumber } from "../../utils";
 
 function Card({list, onDelete, onClose, isCardActive,fullPrice}){
+  const splitedPrice = getSplitedNumber(fullPrice);
+  
   return (
     <div className={ isCardActive ? "Card" : "CardClose"}>
       <div className="CardWrapper">
-        <div>
+        <div className="headWrapper">
           <Head title='Корзина'/>
           <button className="cardBtn" onClick={onClose}>Закрыть</button>
         </div>
-        <MainContainer>
           { list.length 
           ?
           <>
-            <div className="diveder" />
-            <List list={list} onClick={onDelete} isCardActive={isCardActive} btnText='удалить' />
+            <div className="emptyArea" />
+            <List list={list} onClick={onDelete} isItModal={true} btnText='удалить' />
           </>
           :
           <div>Корзина пуста</div>
           }
           <div className="finalResult">
             <strong>Итого</strong>
-            <strong>{fullPrice} ₽</strong>
+            <strong>{splitedPrice} ₽</strong>
           </div>
-        </MainContainer>
       </div>
     </div>
   )
 }
 
-Head.propTypes = {
+Card.propTypes = {
   onDelete: PropTypes.func,
   onClose: PropTypes.func,
   list: PropTypes.arrayOf(PropTypes.shape({
