@@ -3,7 +3,7 @@ import { getVisiblePages } from "../../utils";
 import PropTypes from "prop-types";
 import 'style.css'
 
-function Pagination({size, onChangePage}){
+function Pagination({size, onChangePage,range}){
   
    const [visiblePages, setVisiblePages] = useState([]);
    const [currentPage, setCurrentPage] = useState(1)
@@ -16,8 +16,8 @@ function Pagination({size, onChangePage}){
    function changePage(pageNumber){
       if(typeof pageNumber ==='number'){
          setCurrentPage(pageNumber)
-         setVisiblePages(() => getVisiblePages(pageNumber, Math.ceil(size/10)));
-         onChangePage(10, pageNumber * 10 - 10);
+         setVisiblePages(() => getVisiblePages(pageNumber, Math.ceil(size/range)));
+         onChangePage(range, pageNumber * range - range);
       }
    }
 
@@ -39,6 +39,7 @@ function Pagination({size, onChangePage}){
 Pagination.propTypes = {
    size: PropTypes.number.isRequired,
    onChangePage: PropTypes.func.isRequired,
+   range: PropTypes.number
  };
 
 export default memo(Pagination)

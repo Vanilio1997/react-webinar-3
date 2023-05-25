@@ -21,7 +21,6 @@ function Main() {
     store.actions.catalog.load();
   }, []);
 
-  console.log(useLocation());
 
   const {pathname} = useLocation();
 

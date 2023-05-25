@@ -37,7 +37,6 @@ export function numberFormat(value, locale = 'ru-RU', options = {}) {
 export function getVisiblePages(currentPage,lastPage){
 
   // Если у нас больше 5 страниц
-  console.log(currentPage, lastPage);
   if(lastPage > 5){
     if(currentPage < 3){
       return [1,2,3,'...',lastPage];

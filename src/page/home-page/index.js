@@ -7,7 +7,7 @@ function HomePage ({list,renderItem,size,onChangePage}){
    return (
      <>
        <List list={list} renderItem={renderItem}/>
-       <Pagination size={size} onChangePage={onChangePage} />
+       <Pagination size={size} range={10} onChangePage={onChangePage} />
      </>
    )
  }
