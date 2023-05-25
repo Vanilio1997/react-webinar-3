@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import {cn as bem} from '@bem-react/classname';
 import {numberFormat} from "../../utils";
 import './style.css';
+import { Link } from "react-router-dom";
+import useSelector from "../../store/use-selector";
+import { multiLanguges } from "../../languages";
 
 function Item(props){
 
@@ -12,15 +15,20 @@ function Item(props){
     onAdd: (e) => props.onAdd(props.item._id)
   }
 
+  const select = useSelector(state => ({
+    language:state.language.language
+  }));
+
   return (
     <div className={cn()}>
       {/*<div className={cn('code')}>{props.item._id}</div>*/}
-      <div className={cn('title')}>
-        {props.item.title}
-      </div>
+        <div className={cn('title')}>
+          <Link  className='link' to={`good/ ${props.item._id}`}>{props.item.title}</Link>
+        </div>
+
       <div className={cn('actions')}>
         <div className={cn('price')}>{numberFormat(props.item.price)} ₽</div>
-        <button onClick={callbacks.onAdd}>Добавить</button>
+        <button onClick={callbacks.onAdd}>{multiLanguges[select.language].add}</button>
       </div>
     </div>
   );

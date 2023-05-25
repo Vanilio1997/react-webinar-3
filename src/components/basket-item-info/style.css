@@ -1,0 +1,11 @@
+.basketItemContainer{
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+   padding: 41px;
+   font-size: 18px;
+}
+
+.itemPriceInBasket{
+   font-size: 24px;
+}
