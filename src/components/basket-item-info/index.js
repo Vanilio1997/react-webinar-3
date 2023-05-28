@@ -5,34 +5,20 @@ import { getGoodInfo } from "../../api";
 import Loader from "../loader";
 import { numberFormat } from "../../utils";
 import 'style.css';
-import useSelector from "../../store/use-selector";
 import { multiLanguges } from "../../languages";
 
-function BasketItemInfo({addGood}){
-   const {id} = useParams();
-   const [good,setGood] = useState(null);
-
-   const select = useSelector(state => ({
-      language:state.language.language
-    }));
-   useEffect( () => {
-      // Решил реализовать так,но могу через store.
-      (async () =>{
-         const ourGood = await getGoodInfo(id);
-         setGood(ourGood);
-      })()
-   },[id]);
+function BasketItemInfo({addGood,basketItem,language}){
 
    return (
       <>
-      {good ?
+      {basketItem ?
       <div className="basketItemContainer">
-         <div>{good.description}</div>
-         <div>Страна произовдитель: <strong>{good.madeIn.title} ({good.madeIn.code})</strong></div>
-         <div>Категория: <strong>{good.category.title}</strong></div>
-         <div>Год выпуска: <strong>{good.edition}</strong></div>
-         <div className="itemPriceInBasket"><strong>Цена: {numberFormat(good.price)} ₽</strong></div>
-         <div><button onClick={()=> addGood(good._id)}>{multiLanguges[select.language].add}</button></div>
+         <div>{basketItem.description}</div>
+         <div>{multiLanguges[language].madeIn}: <strong>{basketItem.madeIn.title} ({basketItem.madeIn.code})</strong></div>
+         <div>{multiLanguges[language].category}: <strong>{basketItem.category.title}</strong></div>
+         <div>{multiLanguges[language].yearOfIssue}: <strong>{basketItem.edition}</strong></div>
+         <div className="itemPriceInBasket"><strong>{multiLanguges[language].price}: {numberFormat(basketItem.price)} ₽</strong></div>
+         <div><button onClick={()=> addGood(basketItem._id)}>{multiLanguges[language].add}</button></div>
       </div>
       :
       <Loader />
@@ -43,8 +29,8 @@ function BasketItemInfo({addGood}){
 
 BasketItemInfo.PropTypes = {
    addGood: PropTypes.func,
-   // good: PropTypes.object.isRequired,
-   // getGood: PropTypes.func.isRequired
+   basketItem:PropTypes.object.isRequired,
+   language: PropTypes.string.isRequired
 }
 
 

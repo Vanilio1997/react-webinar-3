@@ -1,0 +1,13 @@
+.MenuItem{
+   list-style-type:none
+}
+
+.MenuItem a{
+   color: #0087E9;
+   text-decoration-color: #0087E9;
+   font-size: 18px;
+}
+
+.MenuListContainer{
+   padding-inline-start: 0;
+}

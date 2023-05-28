@@ -7,29 +7,24 @@ import List from "../../components/list";
 import Pagination from '../../components/pagination';
 import useStore from "../../store/use-store";
 import useSelector from "../../store/use-selector";
-import { Route, Routes } from 'react-router-dom';
-import BasketItemInfo from '../../components/basket-item-info';
-import HomePage from '../../page/home-page';
-import { useLocation } from 'react-router-dom';
 import { multiLanguges } from '../../languages';
+import Menu from "../../components/menu";
+import MenuToolLayout from '../../components/menu-tool-layout';
+import Loader from '../../components/loader';
 
 function Main() {
 
   const store = useStore();
-
-  useEffect(() => {
-    store.actions.catalog.load();
-  }, []);
-
-
-  const {pathname} = useLocation();
 
   const select = useSelector(state => ({
     list: state.catalog.list,
     amount: state.basket.amount,
     sum: state.basket.sum,
     size: state.catalog.size,
-    language:state.language.language
+    language:state.language.language,
+    currentPage: state.catalog.currentPage,
+    range: state.catalog.range,
+    menuItems: state.menu,
   }));
 
   const callbacks = {
@@ -40,41 +35,51 @@ function Main() {
     // Изменение страницы для пагинации
     changePageDataByPagination: useCallback((limit,scip) => store.actions.catalog.changePageByPagination(limit,scip),[store]),
     // Получние информации о товаре
-    // getGoodData: useCallback( id => store.actions.good.load(id), [store]),
-    changeLanguage :useCallback((language)=>store.actions.language.changeLanguage(language),[store]),
+    changeLanguage :useCallback((language)=> store.actions.language.changeLanguage(language),[store]),
+    // Изменить страницу
+    changePageNumber: useCallback((pageNumber) => store.actions.catalog.changeCurrentPage(pageNumber),[store]),
   }
 
   const renders = {
     item: useCallback((item) => {
-      return <Item item={item} onAdd={callbacks.addToBasket}/>
-    }, [callbacks.addToBasket]),
+      return <Item item={item} pathLink={`good/${item._id}`} onAdd={callbacks.addToBasket} language={select.language}/>
+    }, [callbacks.addToBasket, select.language]),
   };
-  
 
+
+  useEffect(() => {
+    store.actions.catalog.load(select.range, select.currentPage * select.range - select.range);
+  }, []);
 
   return (
     <PageLayout>
       <div>
-        <Head title={pathname === '/' ? multiLanguges[select.language].shop: multiLanguges[select.language].productName} />
+        <Head title={multiLanguges[select.language].shop}/>
         <div>
           <div onClick={()=>callbacks.changeLanguage("en")}>en</div>
           <div onClick={()=>callbacks.changeLanguage("ru")}>ru</div>
         </div>
       </div>
-      <div className='mainBasketHead'>
+        <MenuToolLayout>
+        <Menu menuItems={select.menuItems} language={select.language} />
         <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
-                    sum={select.sum}/>
-      </div>
-      <Routes>
-        <Route path="/" element={ <HomePage 
-                                  list={select.list} 
-                                  renderItem={renders.item} 
-                                  size={select.size} 
-                                  onChangePage={callbacks.changePageDataByPagination}
-                                  />} 
-        />
-        <Route path="good/:id" element={<BasketItemInfo addGood={callbacks.addToBasket}/>} />
-      </Routes>
+                    sum={select.sum}
+                    language={select.language}
+                    />
+        </MenuToolLayout>
+        {
+          select.list.length 
+          ?
+          <List list={select.list} renderItem={renders.item}/>
+          :
+          <Loader />
+        }
+      <Pagination size={select.size} 
+                  range={select.range} 
+                  changePageNumber={callbacks.changePageNumber} 
+                  onChangePage={callbacks.changePageDataByPagination} 
+                  currentPage={select.currentPage}
+      />
     </PageLayout>
 
   );

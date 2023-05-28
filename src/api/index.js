@@ -5,8 +5,8 @@
 }
 
 
-export async function getStartData(){
-   const json = await getArticlesData('?limit=10&skip=0&fields=items(_id, title, price),count');
+export async function getStartData(limit,skip){
+   const json = await getArticlesData(`?limit=${limit}&skip=${skip}&fields=items(_id, title, price),count`);
    const {items,count} = await json.result;
    return {items, count};
 }

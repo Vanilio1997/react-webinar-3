@@ -5,14 +5,18 @@ import { getGoodInfo } from "../../api";
 class Good extends StoreModule {
    initState() {
       return {
-        good: {}
+        goodInfo: null,
       }
     }
 
     async load(id) {
-      const good = await getGoodInfo();
       this.setState({
-         good:good
+        goodInfo:null
+      });
+      const good = await getGoodInfo(id);
+
+      this.setState({
+        goodInfo:good
       });
     }
 }

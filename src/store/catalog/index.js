@@ -12,16 +12,18 @@ class Catalog extends StoreModule {
   initState() {
     return {
       list: [],
-      size: 0
+      size: 0,
+      currentPage:1,
+      range:10
     }
   }
 
-  async load() {
-    const {items , count} = await getStartData();
+  async load(limit, scip) {
+    const {items , count} = await getStartData(limit, scip);;
     this.setState({
        ...this.getState(),
        list: items,
-       size: count
+       size: count,
     }, 'Загружены товары из АПИ');
   }
 
@@ -30,6 +32,13 @@ class Catalog extends StoreModule {
     this.setState({
       ...this.getState(),
       list: list
+    })
+  }
+
+  changeCurrentPage(pageNumber){
+    this.setState({
+      ...this.getState(),
+      currentPage: pageNumber
     })
   }
 
