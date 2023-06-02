@@ -1,0 +1,7 @@
+.LoginHeader{
+   height: 41px;
+   display: flex;
+   justify-content: end;
+   padding: 10px 20px;
+   box-sizing: border-box;
+}

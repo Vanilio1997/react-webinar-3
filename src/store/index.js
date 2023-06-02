@@ -42,7 +42,10 @@ class Store {
    * catalog: Object,
    * modals: Object,
    * article: Object,
-   * locale: Object
+   * locale: Object,
+   * category: Object,
+   * loginL Object,
+   * profile: Object,
    * }}
    */
   getState() {
