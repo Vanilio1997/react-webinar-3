@@ -4,7 +4,7 @@ import useStore from "../../hooks/use-store";
 import useSelector from "../../hooks/use-selector";
 import Select from "../../components/select";
 import Input from "../../components/input";
-import SideLayout from "../../components/side-layout";
+import SideLayout from "../../components/layouts/side-layout";
 
 function CatalogFilter() {
 
@@ -17,7 +17,7 @@ function CatalogFilter() {
     categories: state.category.list,
   }));
 
-  console.log(store);
+ 
 
   const callbacks = {
     // Сортировка
@@ -29,7 +29,7 @@ function CatalogFilter() {
     // Получить категории для фильтрации по товару
     getCategories: useCallback(() => store.actions.category.load(),[store]),
     // Фильтрация
-    onFilter: useCallback(category => store.actions.catalog.setParams({category}), [store])
+    onFilter: useCallback(category => store.actions.catalog.setParams({category, page: 1}), [store])
   };
 
 
@@ -39,7 +39,6 @@ function CatalogFilter() {
     const filterCategories = select.categories.map( element => { 
       return {value:element._id , title:element.title}
     })
-    console.log(filterCategories);
   const options = {
     sort: useMemo(() => ([
       {value: 'order', title: 'По порядку'},
@@ -53,9 +52,6 @@ function CatalogFilter() {
     },[select.categories])
   };
 
-  // console.log(options.sort,select.sort, callbacks.onSort);
-  console.log(options, select.categories, callbacks.onFilter);
- 
 
   const {t} = useTranslate();
 

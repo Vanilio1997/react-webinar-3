@@ -1,10 +1,10 @@
 import {memo} from "react";
 import PropTypes from 'prop-types';
 import {cn as bem} from "@bem-react/classname";
-import {Link} from "react-router-dom";
+import ErrorMessage from "../error-message";
 import './style.css';
 
-function Form({items,onSubmit}) {
+function Form({items,onSubmit, btnText ,errorMessage}) {
   const cn = bem('Form');
 
 
@@ -19,17 +19,26 @@ function Form({items,onSubmit}) {
       onSubmit(fields)
  }
   return (
-   <form class="form-example" onSubmit={handleSubmit}>
+   <form className={cn()} onSubmit={handleSubmit}>
       {
          items.map((item)=>(
             <div className="form-example">
-               <label for={item.id}>{item.label} </label>
+               <div>
+                  <label for={item.id}>{item.label} </label>
+               </div>
                <input type={item.type} name={item.id} id={item.id} required/>
             </div>
          ))
       }
+      {
+         errorMessage 
+         ?
+            <ErrorMessage text={errorMessage} />
+         :
+            null
+      }
       <div className="form-example">
-         <input type="submit" value="Subscribe!" />
+         <input type="submit" value={btnText} />
       </div>
    </form>
  
@@ -40,12 +49,14 @@ Form.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
   })),
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  btnText: PropTypes.string,
+  errorMessage: PropTypes.string
 }
 
 Form.defaultProps = {
   items: [],
-  onNavigate: () => {}
+  onSubmit: () => {}
 }
 
 export default memo(Form);

@@ -25,18 +25,37 @@ class LoginState extends StoreModule {
             this.setState({
                ...this.getState(),
                token: json.result.token,
-               successfulRequest: true
+               successfulRequest: true,
+               errorInfo: null
              }, 'Успешная авторизация');
          } else{
             this.setState({
                ...this.getState(),
                successfulRequest: true,
-               errorInfo: json.error.data.issues[0].message
+               errorInfo: json.error.data.issues[0].message,
+               token: null,
              }, 'Неудачная авторизация');
          }
 
          console.log(this.getState());
-   } 
+   }
+
+   async leaveProfile(){
+      const response =  await fetch('/api/v1/users/sign', {
+         method: 'DELETE',
+         headers: {
+            'Content-Type': 'application/json',
+            'X-Token': localStorage.getItem('token')
+         }
+      });
+      if(response.status === 200){
+         localStorage.removeItem('token')
+         this.setState({
+            ...this.getState(),
+            token: null,
+          }, 'Успешная авторизация');
+      }
+   }
 }
 
 export default LoginState;

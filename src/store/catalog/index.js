@@ -92,79 +92,21 @@ class CatalogState extends StoreModule {
 
     const response = await fetch(`/api/v1/articles?${new URLSearchParams(apiParams)}`);
     const json = await response.json();
-    const filtredArr = [];
-    let deepLvlCount = 0;
-    // let dateSortArr = jsonNewFetch.result.items;
-    let dateObj = {};
-    //   dateSortArr.forEach( (element) =>{
-    //   deepLvlCount = 0;
-    //   if(element.parent){
-    //     // const newValue = setDeepLvl(element, jsonNewFetch.result.items)
-    //     filtredArr.push(setDeepLvl(element, jsonNewFetch.result.items))
-    //   } else{
-    //     filtredArr.push({...element, deepLvl:0, textValueInOption: element.title})
-    //   }
-    // })
-
-
-
-    // dateSortArr.sort((a,b) => {
-    //   // console.log(a,b);
-    //   const firstElementIsParent = checkIsParent(b, a, dateSortArr);
-    //   const secondElementisParent = checkIsParent(a, b, dateSortArr);
-    //   // console.log(a, b, firstElementIsParent, secondElementisParent);
-    //   if( secondElementisParent || a.parent?._id === b.parent?._id){
-    //     if(b._id === a.parent?._id){
-    //       console.log(a,b);
-    //       return 1;
-    //     }
-    //   } else {
-    //     return -1
-    //   }
-    // })
-
-
+   
     function checkIsParent(child, parent, arr){
       if(!child.parent){
         return false
       } else if(parent._id === child.parent._id){
         return true
       } else if(child.parent && parent._id !== child.parent._id){
-       const indexOfElement = linearSearch(child.parent._id , arr);
+        const indexOfElement = linearSearch(child.parent._id , arr);
         return checkIsParent(arr[indexOfElement], parent, arr);
       } else{
         return false
       }
     }
-  
-    // for(var i = 0; i < dateSortArr.length; i++){
-    //   if(dateSortArr[i].parent){
-    //     const parentElement = linearSearch(dateSortArr[i].parent._id, dateSortArr);
-    //     
-    //     dateSortArr.splice(parentElement + 1, 0, dateSortArr[i]);
-    //   
-    //     dateSortArr.splice(i , 1);
-    //   } else{
-    //     console.log('noooooooooooo');
-    //   }
-    // }
-    // console.log(dateSortArr);
-// console.log(dateSortArr);
-
-//     function setDeepLvl(element, arr){ 
-//         const parentElement = arr.find(item => item._id === element.parent._id);
-//         if(parentElement.parent){
-//           deepLvlCount++
-//           setDeepLvl(parentElement, arr)
-//           // debugger
-//         } else {
-//           deepLvlCount++
-//           return {...element , deepLvl:deepLvlCount, textValueInOption: `-${element.title}`};
-//         }
-//     }
 
     function linearSearch(id, list) {
-      // console.log(id, list);
       let found = false;
       let position = -1;
       let index = 0;

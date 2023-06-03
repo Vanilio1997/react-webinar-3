@@ -1,10 +1,10 @@
 import {memo} from "react";
 import PropTypes from "prop-types";
-import {cn as bem, cn} from '@bem-react/classname';
+import {cn as bem} from '@bem-react/classname';
 import './style.css';
 
 function LoginLayout({children}){
-   const cn = bem('LoginHeader');
+   const cn = bem('LoginLayout');
    return (
     <div className={cn()}>
       {children}

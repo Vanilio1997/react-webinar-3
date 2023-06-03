@@ -1,0 +1,6 @@
+.LoginFromLayout{
+   margin:  52px 23px;
+   display: flex;
+   flex-direction: column;
+   gap: 17px
+}

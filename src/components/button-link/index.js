@@ -3,20 +3,25 @@ import PropTypes from 'prop-types';
 import './style.css';
 import { Link } from "react-router-dom";
 
-function ButtonLink({link, text}) {
+function ButtonLink({link, text , onClickCallback}) {
 
   return (
-    <button>
-      <Link to={link}>
-         {text}
-      </Link>
-    </button>
+    <Link to={link}>
+      <button onClick={ () => onClickCallback() }>
+          {text}
+      </button>
+    </Link>
   )
 }
 
 ButtonLink.propTypes = {
-  link: PropTypes.string,
-  text: PropTypes.string
+  link: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  onClickCallback: PropTypes.func
 };
+
+ButtonLink.defaultProps = {
+  onClickCallback: () => null
+}
 
 export default memo(ButtonLink);
