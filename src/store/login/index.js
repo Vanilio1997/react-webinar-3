@@ -20,7 +20,7 @@ class LoginState extends StoreModule {
             }
          });
          const json = await response.json();
-         if(response.status === 200){
+         if(response.status === 200 ||response.status === 304 ){
             localStorage.setItem('token', json.result.token)
             this.setState({
                ...this.getState(),
@@ -36,8 +36,6 @@ class LoginState extends StoreModule {
                token: null,
              }, 'Неудачная авторизация');
          }
-
-         console.log(this.getState());
    }
 
    async leaveProfile(){
@@ -48,7 +46,7 @@ class LoginState extends StoreModule {
             'X-Token': localStorage.getItem('token')
          }
       });
-      if(response.status === 200){
+      if(response.status === 200 || response.status === 304){
          localStorage.removeItem('token')
          this.setState({
             ...this.getState(),

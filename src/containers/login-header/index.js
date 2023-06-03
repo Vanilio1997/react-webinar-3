@@ -24,8 +24,7 @@ function LoginHeader(){
    useEffect(()=>{
       callbacks.loginUser(token) 
     },[token])
-   console.log(select.userName);
-   console.log(store);
+
    return(
       <LoginLayout>
          {

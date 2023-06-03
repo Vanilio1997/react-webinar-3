@@ -121,8 +121,6 @@ class CatalogState extends StoreModule {
       return position;
   }
 
-// console.log(filtredArr);
-
     this.setState({
       ...this.getState(),
       list: json.result.items,

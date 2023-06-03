@@ -6,7 +6,6 @@ import './style.css';
 
 function ProfileCard({profile,t}) {
 
-console.log(profile);
   const cn = bem('ProfileCard');
 
   return (
