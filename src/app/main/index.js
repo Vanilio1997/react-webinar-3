@@ -22,7 +22,7 @@ function Main() {
 
   return (
     <PageLayout>
-      <LoginHeader />
+      <LoginHeader /> 
       <Head title={t('title')}>
         <LocaleSelect/>
       </Head>
