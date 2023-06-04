@@ -4,6 +4,7 @@ import useSelector from "../../hooks/use-selector";
 import useStore from "../../hooks/use-store";
 import ButtonLink from "../../components/button-link";
 import { Link } from "react-router-dom";
+import AuthorizationHeader from "../../components/authorization-header";
 
 function LoginHeader(){
 
@@ -27,16 +28,13 @@ function LoginHeader(){
 
    return(
       <LoginLayout>
-         {
-            token 
-            ?
-               <>
-                  <Link to={'/profile'}>{select.userName}</Link>
-                  <ButtonLink onClickCallback={callbacks.leaveProfile} link={'/login'} text='Выход'/>
-               </>
-            :
-            <ButtonLink link={'/login'} text="Вход"/>
-         }
+         <AuthorizationHeader 
+            userName={select.userName} 
+            onLeaveProfile={callbacks.leaveProfile}
+            profileLink='/profile'
+            loginLink = '/login'
+            token={token}
+         />
       </LoginLayout>
    )
 }
