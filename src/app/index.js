@@ -14,6 +14,9 @@ import PrivateRoute from "../components/private-route"
 function App() {
 
   const activeModal = useSelector(state => state.modals.name);
+  const isAuthorized = useSelector(state => state.login.isAuthorized);
+
+  console.log(isAuthorized);
 
   return (
     <>
@@ -21,7 +24,7 @@ function App() {
         <Route path={''} element={<Main/>}/>
         <Route path={'/articles/:id'} element={<Article/>}/>
         <Route path={'/login'} element={<Login/>}/>
-        <Route  path='' element={<PrivateRoute redirectPathName={'/login'} tokenName={'token'} /> }>
+        <Route  path='' element={<PrivateRoute redirectPathName={'/login'} isAuthorized={isAuthorized} /> }>
           <Route  path={'/profile'} element={ <Profile/> }/>
         </Route>
       </Routes>
