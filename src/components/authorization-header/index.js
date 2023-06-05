@@ -7,7 +7,7 @@ function AuthorizationHeader(props){
    return(
       <>
          {
-            props.token
+            props.isAuthorized
             ?
                <>
                   <Link to={props.profileLink}>{props.userName}</Link>
@@ -26,7 +26,7 @@ AuthorizationHeader.propTypes = {
    onLeaveProfile: PropTypes.func,
    profileLink: PropTypes.string,
    loginLink: PropTypes.string,
-   token: PropTypes.string | PropTypes.null,
+   isAuthorized: PropTypes.boolean
 }
 
 export default memo(AuthorizationHeader)

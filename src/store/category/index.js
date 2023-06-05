@@ -1,4 +1,5 @@
 import StoreModule from "../module";
+import merge from "lodash.merge";
 
 class CategoryState extends StoreModule {
 
@@ -13,32 +14,29 @@ class CategoryState extends StoreModule {
       const response = await fetch(`/api/v1/categories?fields=_id,title,parent(_id)&limit=*`);
       const json = await response.json();
       const arr = json.result.items;
-      
-      // Ниже происходит сортировка по вложенности и добавление дефисов
-      const categoriesList = []
       let deepLvlCount = 0
-      for(let i = 0; i< arr.length ; i++ ){
-        setDeepLvl(arr[i], arr)
-        if(arr[i].parent){
-          setDeepLvl(arr[i], arr);
-          const parentPosition = linearSearch(arr[i].parent?._id, categoriesList);
-          const newElementValue = {...arr[i], title: `${setDash(deepLvlCount/2)} ${arr[i].title}`}
-          categoriesList.splice(parentPosition + 1, 0 , newElementValue)
-          deepLvlCount = 0
-        } else{
-          categoriesList.push(arr[i])
-        }
-      }
 
       // в зависимости от вложенности добавляет дефисы
     function setDash(num){
       let dash = '';
       for(let i = 0; i< num; i++){
-       dash = dash + '-';
+       dash = dash + '- ';
       }
       return dash
     }
-// Эта функция нужна для того чтоб найти родительский элемент в итоговом массиве
+
+  // эта функция смотрит вложенность элемента
+    function setDeepLvl(element, arr){ 
+        if(element.parent){
+          deepLvlCount += 1
+          const parentElement =  arr.find(item => item._id === element?.parent?._id);
+          if(parentElement.parent){
+            setDeepLvl(parentElement, arr);
+          }
+        }
+    }
+   
+//  Эта функция нужна для того чтоб найти родительский элемент в итоговом массиве
     function linearSearch(id, list) {
       let found = false;
       let position = -1;
@@ -54,22 +52,49 @@ class CategoryState extends StoreModule {
       return position;
   }
 
-  // эта функция смотрит вложенность элемента
-    function setDeepLvl(element, arr){ 
-        if(element.parent){
-          deepLvlCount += 1
-          const parentElement =  arr.find(item => item._id === element?.parent?._id);
-          if(parentElement.parent){
-            setDeepLvl(parentElement, arr);
-          }
-        }
-    }
-    
+    let obj = {};
+    let categoriesList = [];
 
-      this.setState({
-         ...this.getState(),
-         list: categoriesList,
-       }, 'Загружен список категорий из АПИ');
+    for(let i = 0; i < arr.length; i++){
+      setDeepLvl(arr[i], arr);
+      arr[i].title = `${setDash(deepLvlCount)} ${arr[i].title}`
+      let recurseResult = recurse(arr[i], arr[i]?.parent?._id);
+      recurseResult = { [recurseResult.title]: recurseResult};
+      obj = merge(obj , recurseResult);
+      deepLvlCount = 0;
+    }
+
+    // функция для создания объекта с вложенностью
+    function recurse(element , parentId){
+      if(!parentId){
+        return  element;
+      } else {
+        const parentElementPosition = linearSearch(parentId, arr);
+        const parentElement = arr[parentElementPosition];
+        parentElement.children = {[element.title]: element};
+        return recurse(parentElement , parentElement?.parent?._id);
+      }
+    }
+
+    // преобразование объекта обратно в массив
+    function  objRecurse(obj) {
+      getProp(obj);
+      function getProp(o) {
+          for(let prop in o) {
+              categoriesList.push(o[prop]);
+              if(o[prop]?.children){
+                getProp(o[prop]?.children);
+              }
+          }
+      }
+    }
+
+  objRecurse(obj)
+
+    this.setState({
+        ...this.getState(),
+        list: categoriesList,
+      }, 'Загружен список категорий из АПИ');
    }
 }
 

@@ -1,4 +1,3 @@
-import {useCallback, useContext, useEffect, useState} from 'react';
 import {Routes, Route} from 'react-router-dom';
 import useSelector from "../hooks/use-selector";
 import Main from "./main";
@@ -6,7 +5,7 @@ import Basket from "./basket";
 import Article from "./article";
 import Login from "./login";
 import Profile from "./profile";
-import PrivateRoute from "../components/privete-route" 
+import PrivateRoute from "../components/private-route" 
 
 /**
  * Приложение

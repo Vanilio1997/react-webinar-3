@@ -1,9 +1,7 @@
-import { memo, useMemo , useCallback, useEffect} from "react";
-import LoginLayout from "../../components/layouts/login-layout";
+import { memo, useCallback, useEffect} from "react";
 import useSelector from "../../hooks/use-selector";
 import useStore from "../../hooks/use-store";
-import ButtonLink from "../../components/button-link";
-import { Link } from "react-router-dom";
+import LoginLayout from "../../components/layouts/login-layout";
 import AuthorizationHeader from "../../components/authorization-header";
 
 function LoginHeader(){
@@ -11,20 +9,16 @@ function LoginHeader(){
    const store = useStore();
 
    const select = useSelector(state => ({
-      userName: state.profile.profileInfo?.result?.profile?.name,
-      token: state.login.token
+      userName: state.login.userName,
+      token: state.login.token,
+      isAuthorized: state.login.isAuthorized
    }))
 
    const callbacks = {
       loginUser: useCallback(token => store.actions.profile.getProfileInfo(token), [store]),
       leaveProfile: useCallback( () => store.actions.login.leaveProfile(), [store]),
    }
-
-   const token = localStorage.getItem('token')
-
-   useEffect(()=>{
-      callbacks.loginUser(token) 
-    },[token])
+   
 
    return(
       <LoginLayout>
@@ -33,7 +27,7 @@ function LoginHeader(){
             onLeaveProfile={callbacks.leaveProfile}
             profileLink='/profile'
             loginLink = '/login'
-            token={token}
+            isAuthorized={select.isAuthorized}
          />
       </LoginLayout>
    )

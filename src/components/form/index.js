@@ -26,7 +26,13 @@ function Form({items,onSubmit, btnText ,errorMessage}) {
                <div>
                   <label for={item.id}>{item.label} </label>
                </div>
-               <input type={item.type} name={item.id} id={item.id} required/>
+               <input 
+                  type={item.type} 
+                  name={item.id} 
+                  id={item.id}
+                  className={cn('input')}
+                  />
+
             </div>
          ))
       }
