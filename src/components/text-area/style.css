@@ -1,0 +1,16 @@
+.TextArea{
+   display: flex;
+   flex-direction: column;
+   gap: 13px;
+   margin-bottom: 32px;
+}
+
+.TextArea-input{
+   height: 78px;
+   width: 100%;
+}
+
+.TextArea-btns{
+   display: flex;
+   gap: 10px;
+}

@@ -24,7 +24,6 @@ class ProfileState extends StoreModule {
     });
 
     const {data} = await this.services.api.request({url: `/api/v1/users/self`});
-
     // Профиль загружен успешно
     this.setState({
       data: data.result,
