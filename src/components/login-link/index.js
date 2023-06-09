@@ -13,7 +13,7 @@ function LoginLink({link, onRefuce,type}){
       {
          type === 'comment'
          ?
-            <button onClick={()=> onRefuce()}>Отмена</button>
+            <button className={cn('refuceBtn')} onClick={()=> onRefuce()}>Отмена</button>
          :
             null
       }
