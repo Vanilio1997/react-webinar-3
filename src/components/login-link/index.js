@@ -5,11 +5,11 @@ import './style.css';
 import { Link } from "react-router-dom";
 
 
-function LoginLink({link, onRefuce,type}){
+function LoginLink({onSign, onRefuce,type}){
    const cn = bem('LoginLink');
   return (
     <div className={cn()}>
-      <Link to={link}>Войдите</Link>, чтобы иметь возможность ответить.
+      <button className={cn('signBtn')} onClick={()=> onSign()}>Войдите</button>, чтобы иметь возможность ответить.
       {
          type === 'comment'
          ?
@@ -22,7 +22,7 @@ function LoginLink({link, onRefuce,type}){
 }
 
 LoginLink.propTypes = {
-  link: PropTypes.string,
+  onSign: PropTypes.func,
   onRefuce: PropTypes.func,
   type: PropTypes.string
 };

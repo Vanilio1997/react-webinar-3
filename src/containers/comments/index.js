@@ -1,90 +1,84 @@
-import { memo,useCallback } from "react";
+import { memo,useCallback,useEffect, useMemo } from "react";
 import useStore from "../../hooks/use-store";
 import {useDispatch, useSelector as useSelectorRedux} from "react-redux";
 import useSelector from "../../hooks/use-selector";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate, useLocation } from "react-router-dom";
 import commentsActions from "../../store-redux/comments/actions";
-import PropTypes from "prop-types";
+import PropTypes, { object } from "prop-types";
 import listToTree from "../../utils/list-to-tree";
+import treeToList from "../../utils/tree-to-list";
 import Comment from "../../components/comment";
 import TextArea from "../../components/text-area";
 import LoginLink from "../../components/login-link";
 import CommentsLayout from "../../components/comments-layout";
+import CommmentsQuantity from "../../components/commments-quantity";
 
-function Comments({comments,commentForAnswer}){
+
+function Comments({comments}){
    const store = useStore();
    const dispatch = useDispatch();
    const params = useParams();
+   const locatiom = useLocation();
+   const navigate = useNavigate();
+
 
    const callbacks = {
-      pickComment: useCallback( id => dispatch(commentsActions.pickComment(id)) ,[store]),
-      postComment: useCallback ((text, parentId, type,id) => {
-         dispatch(commentsActions.postComment(text, parentId, type))
-         dispatch(commentsActions.load(id))
+      pickComment: useCallback( (id,type) => dispatch(commentsActions.pickComment(id,type)) ,[store]),
+      postComment: useCallback ((text, parentId, type) => {
+         if(text.trim().length){
+            dispatch(commentsActions.postComment(text, parentId, type))
+         }
       },[store]),
       hideComment: useCallback (() => dispatch(commentsActions.hideComment()),[store]),
-
+      onSignIn: useCallback(() => {
+         navigate('/login', {state: {back: location.pathname}});
+      }, [location.pathname]),
    }
    const selectRedux = useSelectorRedux( state => ({
-      newCommentIdParent: state.comments.commentForAnswer,
+      commentForAnswerInfo: state.comments.commentForAnswerInfo,
+      comments: state.comments.data,
    }))
+
 
    const select = useSelector(state => ({
-      isAuthorized: state.session.exists
+      isAuthorized: state.session.exists,
+      userName: state.session?.user?.profile?.name,
    }))
 
-   const newValue  = comments.items && listToTree(comments.items , params.id);
-   const NewComments = ({items}) => {
-      return (
-         <div>
-            {
-               items.map(item =>  
-                  item.children.length  
-                     ? 
-                     <Comment 
-                        comment={item} 
-                        hideComment={callbacks.hideComment}
-                        pickComment={callbacks.pickComment}
-                        postComment={callbacks.postComment}
-                        isAuthorized={select.isAuthorized}
-                        newCommentIdParent={selectRedux.newCommentIdParent}
-                        typeOfComment='comment'
-                        link='/login'
-                        pageId={params.id}
-                     > 
-                        <NewComments items={item.children}/>
-                     </Comment>
-                     : 
-                  <Comment 
-                     comment={item} 
-                     hideComment={callbacks.hideComment}
-                     pickComment={callbacks.pickComment}
-                     postComment={callbacks.postComment}
-                     isAuthorized={select.isAuthorized}
-                     newCommentIdParent={selectRedux.newCommentIdParent}
-                     typeOfComment='comment'
-                     link='/login'
-                     pageId={params.id}
-                  />
-               )
-            }
-         </div>
-      )
-   }
+   let renderComments = comments && useMemo(() => ([ 
+         ...treeToList( listToTree([...comments.items ,selectRedux.commentForAnswerInfo] ,params.id) , (item, level) => (
+         {...item , level: level }
+        ))
+   ]) , [comments, selectRedux.commentForAnswerInfo]);
 
-   return (
+      return (
       <CommentsLayout>
-         <h2>Комментарии ({comments.count})</h2>              
-        { comments.items && <NewComments items={newValue}  />}
+         <CommmentsQuantity quantity={comments?.count} />    
+         {
+          renderComments?.length && renderComments.map(comment => (
+               <Comment 
+                  comment={comment} 
+                  hideComment={callbacks.hideComment}
+                  pickComment={callbacks.pickComment}
+                  postComment={callbacks.postComment}
+                  isAuthorized={select.isAuthorized}
+                  commentForAnswerInfo={selectRedux.commentForAnswerInfo}
+                  typeOfComment='comment'
+                  onSign={callbacks.onSignIn}
+                  pageId={params.id}
+                  userName={select.userName}
+            />
+            ))
+         }
          <div>
             {  
-               !selectRedux.newCommentIdParent 
+               !selectRedux.commentForAnswerInfo._id 
                ? 
                      select.isAuthorized 
                      ?
                         <TextArea type='article' parentId={params.id} onPostComment={callbacks.postComment} headerText="Комментарий"/>
                      :
-                        <LoginLink link={'/login'} type='arctile' onRefuce={callbacks.hideComment} />
+                        <LoginLink onSign={callbacks.onSignIn} type='arctile' onRefuce={callbacks.hideComment} />
                : 
                    null
             }
@@ -96,7 +90,6 @@ function Comments({comments,commentForAnswer}){
 
 Comments.propTypes = {
    comments: PropTypes.array,
-   commentForAnswer: PropTypes.string
 }
 
 export default memo(Comments)

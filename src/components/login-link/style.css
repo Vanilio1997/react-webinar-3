@@ -1,10 +1,14 @@
-.LoginLink{
-   margin: 30px 0;
-}
-
 .LoginLink-refuceBtn{
    background-color: initial;
    border: none;
    color: #666666;
    text-decoration-line: underline;
+   font-size: 16px;
+}
+
+.LoginLink-signBtn{
+   color: #0087E9;
+   background-color: initial;
+   border: none;
+   font-size: 16px;
 }

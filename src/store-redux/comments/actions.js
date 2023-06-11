@@ -24,10 +24,6 @@ export default {
            const res = await services.api.request({
             url: `/api/v1/comments`,
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Token': localStorage.getItem('token')
-            },
             body: JSON.stringify({
               text : text,
               parent:{_id: parentId,_type: type}
@@ -35,18 +31,18 @@ export default {
           })
           dispatch({type:'postComment'})
         } catch(e){
-          dispatch({type: 'comments/load-error'});
+          console.log(e);
         }
       } 
     },
-    pickComment: (id) => {
+    pickComment: (id, type = '') => {
       return (dispatch) => {
-        dispatch({type: 'pickComment' , payload: id })
+        dispatch({type: 'pickComment' , payload:{_id: type , parent:{_id: id} , isTextArea: true}})
       }
     },
     hideComment: () => {
       return (dispatch) => {
-        dispatch({type: 'hideComment'})
+        dispatch({type: 'hideComment' , payload: {_id: '' , parent:{_id: ''} , isTextArea: true}})
       }
     },
  }

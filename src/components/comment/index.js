@@ -6,45 +6,53 @@ import TextArea from "../text-area";
 import LoginLink from "../login-link";
 import { setTimes } from "../../utils/setTime";
 
-function Comment({comment,
-                  pickComment,
-                  postComment,hideComment,newCommentIdParent,isAuthorized, link , typeOfComment, children,pageId,}){
-
+function Comment({comment,pickComment,postComment,hideComment,isAuthorized, typeOfComment, children,pageId,userName ,onSign}){
    const cn = bem('Comment');
-
    let date = new Date(comment.dateCreate);
-   date = setTimes(date)
-
+   date = setTimes(date);
    return (
-      <div className={cn()}>
+      <div className={cn()} style={{paddingLeft: comment.level < 11 ? `${comment.level*30}px` : `${11*30}px`}}>
+
+         {
+            !comment?.isTextArea
+               ?
+         
          <div className={cn('container')}>
             <div className={cn('infoContainer')}>
-               <span className={cn('userName')}>{comment.author.profile.name}</span>
+               <span className={`${cn('userName')} ${userName === comment.author.profile.name ? 'currentUserComment' : ''}`}>
+                  {comment?.author?.profile?.name}</span>
                <span className={cn('date')}>{date}</span>
             </div>
             <div>
                <span className={cn('text')}>{comment.text}</span>
             </div>
             <div>
-               <div className={cn('btn')} onClick={() => pickComment(comment._id) }>
+               <div className={cn('btn')} onClick={() => pickComment(comment._id, 'comment') }>
                   Ответить
                </div>
             </div>
          </div>
-         <div>
-            {
-                  comment._id === newCommentIdParent 
+         :
+            <div>
+               {
+                  comment._id 
                   ?    
                      isAuthorized 
                      ?
-                        <TextArea type="comment" parentId={comment._id} pageId={pageId} onRefuce={hideComment} onPostComment={postComment} headerText="Ответ"/>
+                        <TextArea 
+                           type="comment" parentId={comment?._id} 
+                           pageId={pageId} onRefuce={hideComment} 
+                           onPostComment={postComment} 
+                           headerText="Ответ"
+                        />
                      :
-                        <LoginLink link={link} type={typeOfComment} onRefuce={hideComment} />
+                        <LoginLink onSign={onSign} type={typeOfComment} onRefuce={hideComment} />
 
                   :
                      null
-            }
+               }
          </div>
+         }
          {Children.map(children, child =>
             <div>
                {child}
@@ -59,8 +67,10 @@ Comment.propstype = {
    pickComment: PropTypes.func,
    postComment: PropTypes.func,
    hideComment: PropTypes.func,
-   newCommentIdParent: PropTypes.string,
+   commentForAnswerInfo: PropTypes.string,
    isAuthorized: PropTypes.bool,
+   userName: PropTypes.string,
+   link: PropTypes.string
 }
 
 export default memo(Comment);

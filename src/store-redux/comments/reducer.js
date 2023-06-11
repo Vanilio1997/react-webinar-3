@@ -1,27 +1,27 @@
 // Начальное состояние
 const initialState = {
-   data: [],
-   value: 0,
+   data: null,
    quantity: null,
-   commentForAnswer: null,
-   waiting: false 
+   commentForAnswerInfo: {_id: '' , parent:{_id: ''} , isTextArea: true},
+   waiting: false,
+   newComment:null,
  }
  
  // Обработчик действий
   function reducer(state = initialState, action) {
     switch (action.type) {
       case "comments/load-start":
-        return { ...state, data: {}, waiting: true};
+        return { ...state, waiting: true};
       case "comments/load-success":
         return { ...state, data: action.payload.data, waiting: false};
       case "comments/load-error":
        return { ...state, data: {}, waiting: false}; 
       case "pickComment":
-        return {...state , commentForAnswer: action.payload};
+        return {...state , commentForAnswerInfo: action.payload};
       case "postComment": 
-        return {...state , commentForAnswer: null};
+        return {...state };
       case "hideComment":
-        return {...state , commentForAnswer: null}
+        return {...state , commentForAnswerInfo: action.payload}
       default:
         return state;
     }

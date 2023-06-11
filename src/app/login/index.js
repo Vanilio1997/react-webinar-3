@@ -20,7 +20,6 @@ function Login() {
   const location = useLocation();
   const navigate = useNavigate();
   const store = useStore();
-
   useInit(() => {
     store.actions.session.resetErrors();
   })

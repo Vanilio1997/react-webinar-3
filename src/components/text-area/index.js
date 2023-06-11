@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
 
-function TextArea({headerText,parentId,type, onPostComment , pageId , onRefuce}) {
+function TextArea({headerText,parentId,type, onPostComment , onRefuce,}) {
    const [textAreaValue, setTextAreaValue] = useState('');
    const cn = bem("TextArea");
    return(
@@ -13,7 +13,7 @@ function TextArea({headerText,parentId,type, onPostComment , pageId , onRefuce})
          <input className={cn("input")} onChange={(e) => setTextAreaValue(e.target.value)} /> 
       </div>
       <div className={cn("btns")}>
-         <button onClick={() => onPostComment(textAreaValue, parentId, type,pageId)}>Отправить</button>
+         <button onClick={() => onPostComment(textAreaValue, parentId, type)}>Отправить</button>
          {
             type === 'comment' 
                ?
@@ -32,7 +32,7 @@ TextArea.propTypes = {
    type: PropTypes.string,
    onPostComment: PropTypes.func,
    pageId: PropTypes.string,
-   onRefuce: PropTypes.func
+   onRefuce: PropTypes.func,
 };
 
 export default memo(TextArea);
