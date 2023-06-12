@@ -15,43 +15,42 @@ function Comment({comment,pickComment,postComment,hideComment,isAuthorized, type
 
          {
             !comment?.isTextArea
-               ?
-         
-         <div className={cn('container')}>
-            <div className={cn('infoContainer')}>
-               <span className={`${cn('userName')} ${userName === comment.author.profile.name ? 'currentUserComment' : ''}`}>
-                  {comment?.author?.profile?.name}</span>
-               <span className={cn('date')}>{date}</span>
-            </div>
-            <div>
-               <span className={cn('text')}>{comment.text}</span>
-            </div>
-            <div>
-               <div className={cn('btn')} onClick={() => pickComment(comment._id, 'comment') }>
-                  Ответить
+            ?
+               <div className={cn('container')}>
+                  <div className={cn('infoContainer')}>
+                     <span className={`${cn('userName')} ${userName === comment.author.profile.name ? 'currentUserComment' : ''}`}>
+                        {comment?.author?.profile?.name}</span>
+                     <span className={cn('date')}>{date}</span>
+                  </div>
+                  <div>
+                     <span className={cn('text')}>{comment.text}</span>
+                  </div>
+                  <div>
+                     <div className={cn('btn')} onClick={() => pickComment(comment._id, 'comment') }>
+                        Ответить
+                     </div>
+                  </div>
                </div>
-            </div>
-         </div>
-         :
-            <div>
-               {
-                  comment._id 
-                  ?    
-                     isAuthorized 
-                     ?
-                        <TextArea 
-                           type="comment" parentId={comment?._id} 
-                           pageId={pageId} onRefuce={hideComment} 
-                           onPostComment={postComment} 
-                           headerText="Ответ"
-                        />
-                     :
-                        <LoginLink onSign={onSign} type={typeOfComment} onRefuce={hideComment} />
+            :
+               <div>
+                  {
+                     comment._id 
+                     ?    
+                        isAuthorized 
+                        ?
+                           <TextArea 
+                              type="comment" parentId={comment?._id} 
+                              pageId={pageId} onRefuce={hideComment} 
+                              onPostComment={postComment} 
+                              headerText="Ответ"
+                           />
+                        :
+                           <LoginLink onSign={onSign} type={typeOfComment} onRefuce={hideComment} />
 
-                  :
-                     null
-               }
-         </div>
+                     :
+                        null
+                  }
+            </div>
          }
          {Children.map(children, child =>
             <div>

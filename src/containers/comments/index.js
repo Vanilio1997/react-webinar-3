@@ -45,7 +45,7 @@ function Comments({comments}){
       userName: state.session?.user?.profile?.name,
    }))
 
-   let renderComments = comments && useMemo(() => ([ 
+   let renderComments = comments?.items?.length && useMemo(() => ([ 
          ...treeToList( listToTree([...comments.items ,selectRedux.commentForAnswerInfo] ,params.id) , (item, level) => (
          {...item , level: level }
         ))
