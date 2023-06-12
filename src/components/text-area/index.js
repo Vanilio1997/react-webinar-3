@@ -10,7 +10,7 @@ function TextArea({headerText,parentId,type, onPostComment , onRefuce,}) {
    <div className={cn()}>
       <strong>Новый {headerText}</strong>
       <div>
-         <input className={cn("input")} onChange={(e) => setTextAreaValue(e.target.value)} /> 
+         <textarea className={cn("input")} onChange={(e) => setTextAreaValue(e.target.value)} /> 
       </div>
       <div className={cn("btns")}>
          <button onClick={() => onPostComment(textAreaValue, parentId, type)}>Отправить</button>
