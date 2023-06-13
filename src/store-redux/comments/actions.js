@@ -29,7 +29,12 @@ export default {
               parent:{_id: parentId,_type: type}
             })
           })
-          dispatch({type:'postComment'})
+          const user = services.store.state.session.user;
+          const comment = res.data.result
+          dispatch({type:'postComment', payload: { 
+            comment: { ...comment , author: user},
+            textArea: {_id: '' , parent:{_id: ''} , isTextArea: true}
+          }})
         } catch(e){
           console.log(e);
         }

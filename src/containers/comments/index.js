@@ -18,7 +18,6 @@ function Comments({comments}){
    const store = useStore();
    const dispatch = useDispatch();
    const params = useParams();
-   const locatiom = useLocation();
    const navigate = useNavigate();
 
 
@@ -38,7 +37,6 @@ function Comments({comments}){
       commentForAnswerInfo: state.comments.commentForAnswerInfo,
       comments: state.comments.data,
    }))
-
 
    const select = useSelector(state => ({
       isAuthorized: state.session.exists,

@@ -19,7 +19,10 @@ const initialState = {
       case "pickComment":
         return {...state , commentForAnswerInfo: action.payload};
       case "postComment": 
-        return {...state };
+      console.log(state);
+        return {...state, data: {...state.data , 
+                          items: [...state.data.items , action.payload.comment]},
+                          commentForAnswerInfo: action.payload.textArea };
       case "hideComment":
         return {...state , commentForAnswerInfo: action.payload}
       default:

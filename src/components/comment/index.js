@@ -39,7 +39,7 @@ function Comment({comment,pickComment,postComment,hideComment,isAuthorized, type
                         isAuthorized 
                         ?
                            <TextArea 
-                              type="comment" parentId={comment?._id} 
+                              type="comment" parentId={comment.parent._id} 
                               pageId={pageId} onRefuce={hideComment} 
                               onPostComment={postComment} 
                               headerText="Ответ"
