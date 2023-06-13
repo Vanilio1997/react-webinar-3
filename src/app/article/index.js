@@ -16,8 +16,6 @@ import articleActions from '../../store-redux/article/actions';
 import commentsActions from '../../store-redux/comments/actions';
 import Comments from '../../containers/comments';
 import shallowequal from "shallowequal";
-import listToTree from '../../utils/list-to-tree';
-import treeToList from '../../utils/tree-to-list';
 
 
 function Article() {

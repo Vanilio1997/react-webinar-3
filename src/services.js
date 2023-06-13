@@ -39,6 +39,13 @@ class Services {
     }
     return this._redux;
   }
+
+  get i18n(){
+    if(!this._i18n){
+      this.i18n = new MultilanguagesService(this, this.config.i18n)
+    }
+  }
+
 }
 
 export default Services;

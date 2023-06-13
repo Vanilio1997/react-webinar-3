@@ -5,6 +5,7 @@
  * @returns {Array} Корневые узлы
  */
 export default function listToTree(list, rootId = null,key = '_id') {
+
   let trees = {};
   let roots = {};
   for (const item of list) {

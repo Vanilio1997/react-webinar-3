@@ -19,7 +19,6 @@ const initialState = {
       case "pickComment":
         return {...state , commentForAnswerInfo: action.payload};
       case "postComment": 
-      console.log(state);
         return {...state, data: {...state.data , 
                           items: [...state.data.items , action.payload.comment]},
                           commentForAnswerInfo: action.payload.textArea };

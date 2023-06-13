@@ -12,6 +12,7 @@ import TextArea from "../../components/text-area";
 import LoginLink from "../../components/login-link";
 import CommentsLayout from "../../components/comments-layout";
 import CommmentsQuantity from "../../components/commments-quantity";
+import shallowEqual from "shallowequal";
 
 
 function Comments({comments}){
@@ -35,16 +36,16 @@ function Comments({comments}){
    }
    const selectRedux = useSelectorRedux( state => ({
       commentForAnswerInfo: state.comments.commentForAnswerInfo,
-      comments: state.comments.data,
-   }))
+   }), shallowEqual);
 
    const select = useSelector(state => ({
       isAuthorized: state.session.exists,
       userName: state.session?.user?.profile?.name,
-   }))
-
-   let renderComments = comments?.items?.length && useMemo(() => ([ 
-         ...treeToList( listToTree([...comments.items ,selectRedux.commentForAnswerInfo] ,params.id) , (item, level) => (
+   }));
+   const arrForRander = comments ? [...comments?.items ,selectRedux.commentForAnswerInfo] : []
+   console.log(arrForRander);
+   let renderComments =  useMemo(() => ([ 
+         ...treeToList( listToTree(arrForRander ,params.id) , (item, level) => (
          {...item , level: level }
         ))
    ]) , [comments, selectRedux.commentForAnswerInfo]);
@@ -65,6 +66,7 @@ function Comments({comments}){
                   onSign={callbacks.onSignIn}
                   pageId={params.id}
                   userName={select.userName}
+                  key={comment._id}
             />
             ))
          }
