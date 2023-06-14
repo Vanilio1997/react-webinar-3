@@ -14,7 +14,6 @@ export const I18nContext = createContext({});
 export function I18nProvider({children}) {
 
   const [lang, setLang] = useState('ru');
-
   const i18n = useMemo(() => ({
     // Код локали
     lang,

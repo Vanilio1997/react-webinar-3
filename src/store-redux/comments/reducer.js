@@ -15,11 +15,10 @@ const initialState = {
       case "comments/load-success":
         return { ...state, data: action.payload.data, waiting: false};
       case "comments/load-error":
-       return { ...state, data: {}, waiting: false}; 
+        return { ...state, data: {}, waiting: false}; 
       case "pickComment":
         return {...state , commentForAnswerInfo: action.payload};
       case "postComment": 
-      console.log(state);
         return {...state, data: { count: state.data.count + 1, items: [...state.data.items , action.payload.comment]},
                           commentForAnswerInfo: action.payload.textArea };
       case "hideComment":

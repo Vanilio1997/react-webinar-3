@@ -7,7 +7,6 @@ export default {
     load: (id) => {
       return async (dispatch, getState, services) => {
         dispatch({type: 'comments/load-start'});
-  
         try {
           const res = await services.api.request({
             url: `/api/v1/comments?search[parent]=${id}&limit=*&fields=items(_id,text,dateCreate,author(profile(name)),parent(_id,_type)),count`

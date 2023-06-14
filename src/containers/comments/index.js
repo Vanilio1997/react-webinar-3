@@ -43,7 +43,6 @@ function Comments({comments}){
       userName: state.session?.user?.profile?.name,
    }));
    const arrForRander = comments ? [...comments?.items ,selectRedux.commentForAnswerInfo] : []
-   console.log(arrForRander);
    let renderComments =  useMemo(() => ([ 
          ...treeToList( listToTree(arrForRander ,params.id) , (item, level) => (
          {...item , level: level }
